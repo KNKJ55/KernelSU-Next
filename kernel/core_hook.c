@@ -863,10 +863,12 @@ out_ksu_try_umount:
 #endif
 	}
 
+    #ifndef CONFIG_KSU_SUSFS_SUS_MOUNT
 	// check old process's selinux context, if it is not zygote, ignore it!
 	// because some su apps may setuid to untrusted_app but they are in global mount namespace
 	// when we umount for such process, that is a disaster!
 	bool is_zygote_child = is_zygote(old->security);
+	#endif
 	if (!is_zygote_child) {
 		pr_info("handle umount ignore non zygote child: %d\n",
 			current->pid);
